@@ -1,8 +1,12 @@
-# ## Ejercicio 1 ## #
+import string
+import math
+
+# ################### EJERCICIO 1 ################## #
 
 # Completad el ccdigo necesario para calcular el numero de palabras y de espacios de un texto.
 # El numero de espacios no tiene que ser necesariamente funcion del numero de
 # palabras. (1 punto)
+
 
 def contar_palabras_y_espacios(texto):
     num_palabras = 0
@@ -25,7 +29,7 @@ def contar_palabras_y_espacios(texto):
 texto = "Hola 1 2 3+1 n "
 string_split = contar_palabras_y_espacios(texto)
 
-# ## Ejercicio 2 ## #
+# ################### EJERCICIO 2 ###################
 
 # Masas atomicas
 
@@ -59,11 +63,9 @@ print calcula_masa_atomica('C8-H10-N4-O2')
 print calcula_masa_atomica('C20-H25-N3-O')
 print calcula_masa_atomica('C20-H10-O2-P2-S')
 
-# ## Ejercicio 3 ## #
+# ################### EJERCICIO 3 ################## #
 
 # Completad las siguientes funciones matemmticas
-
-import math
 
 
 def area_circulo(radio):
@@ -125,7 +127,7 @@ print("El volumen de una cubo de 3 cm de arista es de %.2f cm3" % volumen_cubo(3
 # Escribid aqui algunos ejemplos utilizando estas funciones, por ejemplo:
 # print 'El volumen del cubo de lado 3.5 es %f' % volumen_cubo(3.5)
 
-# ## EJERCICIO 4 ### #
+# ################### EJERCICIO 4 ################## #
 
 # El siguiente ejercicio consiste en pasar un numero en base 2 (binario, 0/1) a base 10 (decimal).
 # Dado un string que representa un numero en binario, por ejemplo, 1011, devolved el nUmero natural
@@ -135,31 +137,79 @@ print("El volumen de una cubo de 3 cm de arista es de %.2f cm3" % volumen_cubo(3
 def binario_a_decimal(numero_a_convertir):
     numero_a_convertir = str(numero_a_convertir)
     numero_a_convertir = list(numero_a_convertir)
-
     for ii in numero_a_convertir:
         if ii not in ["0", "1"]:
-            print("El numero no es binario")
-            exit
-    print("Procedemos a la Conversion del numero binario:")
-
-    print(numero_a_convertir)
-    print(len(numero_a_convertir))
-
+            print("El numero %s no es binario" % ''.join(numero_a_convertir))
+            return "Introduzca un numero binario"
+    print("El numero decimal correspondiente al numero binario %s es:" % ''.join(numero_a_convertir))
+    vector_of_twos = []
     power_index = []
-    for ii in range(0, (len(numero_a_convertir))):
-        print type(int(ii))
-        power_index.append([ii])
-    print power_index, type(power_index)
-
     multipliers = []
-    for jj in numero_a_convertir:
-        print type(int(jj))
-        multipliers.append([int(jj)])
-    print multipliers, type(multipliers)
+    for ii in range(0, (len(numero_a_convertir))):
+        vector_of_twos.append(2)
+        power_index.insert(0, ii)
+        multipliers.append(int(numero_a_convertir[ii]))
+    resultado = sum([a ** b * c for a, b, c in zip(vector_of_twos, power_index, multipliers)])
+    return resultado
 
-    return numero_a_convertir
 
-    # vector_of_twos
+Lista_ejemplos = [101010101, 1111, 21311]
+for ejemplo in Lista_ejemplos:
+    print(binario_a_decimal(ejemplo))
 
-numero = binario_a_decimal(1101)
+# def fibonacci(n=100):
+#     a, b = 0, 1
+#     while a < n:
+#         print a,b
+#         a, b = b, a+b
+#
+# fibonacci(10)
+
+# ################### EJERCICIO 5 ################## #
+
+# Uno de los algoritmos mas basicos en criptografia es el cifrado Cesar (https://es.wikipedia.org/wiki/Cifrado_
+# C%C3%A9sar), que fue utilizado por Julio Cesar para comunicarse # con sus generales, y que consiste en dado un texto,
+#  por cada una de las letras del texto, aniadirle un desplazamiento para conseguir una nueva letra diferente de la
+#  original. # Comprenderemos rapidamente su mecanismo mediante un ejemplo: # Si asignamos el numero 1 a la primera
+# letra del abecedario, A, 2 a la siguiente, B, etc., imaginad que tenemos el siguiente mensaje:
+# ABC
+# 123
+# Si aplicamos un desplazamiento de 3, buscaremos cual es la letra en el abecedario que se corresponde:
+# DEF
+# 456
+# ABC se ha convertido en DEF porque hemos sumado un desplazamiento de 3. Tambien podriamos aplicar otros tipos
+# de desplazamiento como los negativos. Por ejemplo, para
+# el desplazamiento -1 y el mensaje original ABC tendriamos un mensaje cifrado de: ZAB.
+# Escribid una funcion que dado un mensaje original y un desplazamiento, calcule y devuelva el mensaje cifrado.
+# 1.5 puntos
+
+lista_abecedario = list(string.ascii_uppercase)
+lista_numeros = range(len(lista_abecedario))
+diccionario_cesar_forward = dict(zip(lista_numeros, lista_abecedario))
+diccionario_cesar_backwards = dict(zip(lista_abecedario, lista_numeros))
+
+
+def cifrado_cesar(mensaje, desplazamiento):
+
+    mensaje_original = mensaje.split()
+
+    palabras_codificadas = []
+    for palabras in mensaje_original:
+        palabras = palabras.upper()
+        letras_palabra = list(palabras)
+        valores_palabra = [diccionario_cesar_backwards.get(x) for x in letras_palabra]
+        valores_codificados = [x + desplazamiento for x in valores_palabra]
+        letras_codificadas = [diccionario_cesar_forward.get(x) for x in valores_codificados]
+        palabras_codificadas.append(''.join(letras_codificadas))
+    mensaje_codificado = ' '.join(palabras_codificadas)
+
+    print("El mensaje original es '%s' pero a las tropas les llegara como '%s' " % (mensaje,mensaje_codificado))
+
+
+mensaje_normal = "Abanadonen el barco"
+cifrado_cesar(mensaje_normal, 2)
+
+
+# Las funciones range y xrange pueden utilizarse con la misma finalidad, pero su funcionamiento es distinto. Explicad en qué se diferencian y comentad para qué sirve la palabra
+# # reservada yield. Poned un ejemplo de uso de range, xrange y otro de yield. (1 punto)
 
