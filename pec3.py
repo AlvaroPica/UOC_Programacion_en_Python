@@ -9,8 +9,6 @@ import math
 
 
 def contar_palabras_y_espacios(texto):
-    num_palabras = 0
-    num_espacios = 0
 
     num_espacios = texto.count(" ")
     string_split = texto.split(" ")
@@ -18,16 +16,15 @@ def contar_palabras_y_espacios(texto):
     if string_split[-1] == "":
         string_split = string_split[:-1]
 
-    num_espacios = len(string_split)
+    num_palabras = len(string_split)
 
-    print("El numero de palabras es %d" % num_espacios)
+    print("El numero de palabras es %d" % num_palabras)
     print("El numero de espacios es %d" % num_espacios)
-
-    return string_split
 
 
 texto = "Hola 1 2 3+1 n "
-string_split = contar_palabras_y_espacios(texto)
+
+contar_palabras_y_espacios(texto)
 
 # ################### EJERCICIO 2 ###################
 
@@ -52,13 +49,14 @@ def calcula_masa_atomica(molecula):
             cuantificador_atomo = float(cuantificador_atomo)
             masa_atomo = masas[identificador_atomo]
             masa_asociada_atomo = cuantificador_atomo * masa_atomo
-            masa = round(masa + masa_asociada_atomo, 2)
+            masa = masa + masa_asociada_atomo
             # print identificador_atomo, cuantificador_atomo, masa_atomo, masa_asociada_atomo
 
         return masa
 
 
-print calcula_masa_atomica('C13-H18-O2')
+print('La masa es {:.2f}'.format(calcula_masa_atomica('C13-H18-O2')))
+print('La masa es %.2f' % calcula_masa_atomica('C13-H18-O2'))
 print calcula_masa_atomica('C8-H10-N4-O2')
 print calcula_masa_atomica('C20-H25-N3-O')
 print calcula_masa_atomica('C20-H10-O2-P2-S')
@@ -70,7 +68,7 @@ print calcula_masa_atomica('C20-H10-O2-P2-S')
 
 def area_circulo(radio):
 
-    area = round(math.pi * radio ** 2, 2)
+    area = math.pi * radio ** 2
 
     return area
 
@@ -135,6 +133,7 @@ print("El volumen de una cubo de 3 cm de arista es de %.2f cm3" % volumen_cubo(3
 
 
 def binario_a_decimal(numero_a_convertir):
+
     numero_a_convertir = str(numero_a_convertir)
     numero_a_convertir = list(numero_a_convertir)
     for ii in numero_a_convertir:
@@ -149,7 +148,8 @@ def binario_a_decimal(numero_a_convertir):
         vector_of_twos.append(2)
         power_index.insert(0, ii)
         multipliers.append(int(numero_a_convertir[ii]))
-    resultado = sum([a ** b * c for a, b, c in zip(vector_of_twos, power_index, multipliers)])
+    resultado = sum([(a ** b) * c for a, b, c in zip(vector_of_twos, power_index, multipliers)])
+
     return resultado
 
 
@@ -157,16 +157,7 @@ Lista_ejemplos = [101010101, 1111, 21311]
 for ejemplo in Lista_ejemplos:
     print(binario_a_decimal(ejemplo))
 
-# def fibonacci(n=100):
-#     a, b = 0, 1
-#     while a < n:
-#         print a,b
-#         a, b = b, a+b
-#
-# fibonacci(10)
-
 # ################### EJERCICIO 5 ################## #
-
 # Uno de los algoritmos mas basicos en criptografia es el cifrado Cesar (https://es.wikipedia.org/wiki/Cifrado_
 # C%C3%A9sar), que fue utilizado por Julio Cesar para comunicarse # con sus generales, y que consiste en dado un texto,
 #  por cada una de las letras del texto, aniadirle un desplazamiento para conseguir una nueva letra diferente de la
@@ -184,7 +175,8 @@ for ejemplo in Lista_ejemplos:
 # 1.5 puntos
 
 lista_abecedario = list(string.ascii_uppercase)
-lista_numeros = range(len(lista_abecedario))
+num_letras_abecedario = len(lista_abecedario)
+lista_numeros = range(num_letras_abecedario)
 diccionario_cesar_forward = dict(zip(lista_numeros, lista_abecedario))
 diccionario_cesar_backwards = dict(zip(lista_abecedario, lista_numeros))
 
@@ -194,12 +186,12 @@ def cifrado_cesar(mensaje, desplazamiento):
     mensaje_original = mensaje.split()
 
     palabras_codificadas = []
-    for palabras in mensaje_original:
-        palabras = palabras.upper()
-        letras_palabra = list(palabras)
-        valores_palabra = [diccionario_cesar_backwards.get(x) for x in letras_palabra]
+    for palabra in mensaje_original:
+        palabra = palabra.upper()
+        letras_palabra = list(palabra)
+        valores_palabra = [diccionario_cesar_backwards[x] for x in letras_palabra]
         valores_codificados = [x + desplazamiento for x in valores_palabra]
-        letras_codificadas = [diccionario_cesar_forward.get(x) for x in valores_codificados]
+        letras_codificadas = [diccionario_cesar_forward[x % num_letras_abecedario] for x in valores_codificados]
         palabras_codificadas.append(''.join(letras_codificadas))
     mensaje_codificado = ' '.join(palabras_codificadas)
 
@@ -207,9 +199,10 @@ def cifrado_cesar(mensaje, desplazamiento):
 
 
 mensaje_normal = "Abanadonen el barco"
-cifrado_cesar(mensaje_normal, 2)
+cifrado_cesar(mensaje_normal, 26)
 
 
-# Las funciones range y xrange pueden utilizarse con la misma finalidad, pero su funcionamiento es distinto. Explicad en qué se diferencian y comentad para qué sirve la palabra
+# Las funciones range y xrange pueden utilizarse con la misma finalidad, pero su funcionamiento es distinto.
+# Explicad en que se diferencian y comentad para qu? sirve la palabra
 # # reservada yield. Poned un ejemplo de uso de range, xrange y otro de yield. (1 punto)
 
